@@ -59,14 +59,17 @@ const rootReducer = (state = initialState, action: { type: any; payload?: any; }
                 return fromJS(state.setIn(['counters', 'one', 'current'], state.getIn(['counters', 'one', 'current']) + 1)) //state.counters.one = (state.counters.one + 1)
            
             case DECREMENT:
-               
+                fromJS(state.setIn(['magicNums', 'magic', 'current'], state.getIn(['counters', 'two', 'current']) - 1))   
+
                 return fromJS(state.setIn(['counters', 'one', 'current'], state.getIn(['counters', 'one', 'current']) - 1))
            
             case CAST:
-               console.log("cast Magic done")
+            console.log("cast Magic done");
+          
                 return fromJS(state.setIn(['magicNums', 'cast', 'current', 'magicNums2', 'cast', 'current'], (state.getIn(['counters', 'two', 'current']) * 2)+ (state.getIn(['counters', 'one', 'current']) )))
             
-            case RESET:
+        case RESET:
+        
                 return fromJS(initialState)
            
             case MAGIC:

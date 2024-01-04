@@ -1,80 +1,30 @@
 
 import {useEffect, useMemo} from 'react';
-import { View, Text, Button } from 'react-native';
 import { CounterService } from '../../../services/CounterService';
 import { SelectorService } from '../../../services/SelectorService';
-import { Link, useNavigation, usePathname } from "expo-router"
-import { Counter } from '../../../component/Counter';
-import { Counter2 } from '../../../component/Counter2';
+import {  usePathname } from "expo-router"
+import {Page1} from './views/page1'
 
 let myPage = "";
-  
-const store = CounterService.getStore();
 let isVisible: boolean = true;
 
-const MagicText1 = ({children}): JSX.Element => {
-
-     
-  const data = SelectorService.data;
-
-    return (
-      <>
-      <Text>MagicNums</Text>
-      <Text >Magic: {data.magicNum.cast.cars.car_list()}</Text>
-      {children}
-    </>
-    )
-  }
+const data = SelectorService.data;
 
 
- const MagicText3a = (): JSX.Element => {
-       const cast1 = SelectorService.data.magicNum.cast.current.magicNum2.current()
-       
-     console.log('magicNums3a',cast1)
-    return (
-      <>
-        <Text>MagicNums3</Text>
-        <Text >cast: {cast1}</Text>
-      </>
-    )
-}
+export default function Page1Presenter() {
 
-// const Counter = () => {
-
-//     let one1 = SelectorService.data.rental.userName();
-
-//     console.log('Countera', one1)
-//     return <Text >Count-one: {one1}</Text>
-
-//   }
-
-//   const Counter2 = () => {
-//     const rental = SelectorService.data.rental;
-
-//     let two1 = rental.address();
-//    console.log('Counter2a', two1)
-
-//     return <Text>Count-two: {two1}</Text>
-
-//   }
-
-export default function Page1() {
-
-  console.log('page1')
+  console.log('Page1Presenter')
   const pathname = usePathname();
   useEffect(() => {
     myPage = pathname
   },[])
   useEffect(() => {
     isVisible = pathname === myPage;
-
+ 
     console.log('pathname', pathname, myPage, isVisible)
   }, [pathname]);
 
   
-
-  const navigation = useNavigation();
- 
   let randNum = useMemo(() => parseInt(String(Math.random() * 1000), 10), []); //parseInt(Math.random() * 1000, 10);
 
   const handleIncrementCount2 = () => {
@@ -114,29 +64,8 @@ export default function Page1() {
     CounterService.castMagic();
   }
 
-    return (
-      <View style={{ width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Counter />
-        <Counter2 />
-      
-        <Button title="Increment" onPress={handleIncrementCount} />
-        <Button title="two Increment" onPress={handleIncrementCount2} />
-
-        <Button title="Decrement" onPress={handleDecrementCount} />
-        <Button title="Reset" onPress={handleResetCount} />
-        <Button title="Calculate" onPress={addRandom} />
-        <Button title="Increment Magic" onPress={addMagic} />
-        <Button title="Cast Magic" onPress={handleCast} />
-         <Link href="screens/page2" asChild>
-           <Button title="Go to page2" />
-         </Link>
-        <Button title="back" onPress={() => navigation.goBack()} />
-
-        <MagicText3a  />
-        <MagicText1 > 
-          <MagicText3a />
-        </MagicText1>
-   
-      </View>
+  return (
+   //<Page1 data={data} handlers={this}/>
+     <Page1 data={data} handlers={{handleIncrementCount, handleIncrementCount2, handleDecrementCount, handleResetCount, addRandom, addMagic, handleCast}}/>
     )
 }

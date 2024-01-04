@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect';
+import { Selector, createSelector } from 'reselect';
 import {Map, fromJS } from 'immutable';
 import {RootState, useAppSelector } from './SelectorUtils';
 import { CounterService } from '../../services/CounterService';
@@ -13,26 +13,32 @@ export function userName() {
 }
 export function address() {
     const val = useAppSelector(select4)
-    castMagic()
+     castMagic()
     return val;
 }
-export function car_class1(index: number) {
+export function car_class1() {
     const val = useAppSelector(select15)
-   castMagic()
+    castMagic()
     return val
 }
- function castMagic() {
-  Promise.resolve( CounterService.castMagic())
+ async function castMagic() {
+  CounterService.castMagic()
 }
 
 export interface Rental {
             userName(): any;
             address(): any;
-            car_class1
+            car_class1: {
+                 data: any
+                sorted: any
+            }
 }
 
 export const Rental: Rental = {
     userName,
     address,
-    car_class1
+    car_class1:{
+        data: car_class1,
+        sorted: car_class1
+    }
 }
