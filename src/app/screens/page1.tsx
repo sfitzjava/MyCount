@@ -1,14 +1,19 @@
 
 import {useEffect, useMemo} from 'react';
 import { CounterService } from '../../../services/CounterService';
-import { SelectorService } from '../../../services/SelectorService';
 import {  usePathname } from "expo-router"
-import {Page1} from './views/page1'
+import { View, Text, Button } from 'react-native';
+import { Link,  useNavigation, } from "expo-router"
+import { Counter } from '../../../component/Counter';
+import { createSelector } from 'reselect';
+import { RootState, useAppSelector } from '@/selectors/SelectorUtils';
+import { fromJS, Map } from 'immutable';
+
+const castSelect = createSelector((state:RootState) => state.getIn(['magicNums', 'cast', 'current', 'magicNums2', 'cast', 'current'], Map({})), (cast) => fromJS(cast),)
+const magic2Cast = createSelector((state:RootState) =>  state.getIn(['magicNums', 'cast', 'current', 'magicNums2', 'cast', 'initial'], Map({})), (two) => fromJS(two),)
+const select4 = createSelector((state:RootState) =>   state.getIn(['counters', 'two', 'current'], Map({})), (one) => fromJS(one), )
 
 let myPage = "";
-let isVisible: boolean = true;
-
-const data = SelectorService.data;
 
 
 export default function Page1Presenter() {
@@ -18,35 +23,17 @@ export default function Page1Presenter() {
   useEffect(() => {
     myPage = pathname
   },[])
-  useEffect(() => {
-    isVisible = pathname === myPage;
- 
-    console.log('pathname', pathname, myPage, isVisible)
-  }, [pathname]);
 
-  
+  const counterService = CounterService();
+
   let randNum = useMemo(() => parseInt(String(Math.random() * 1000), 10), []); //parseInt(Math.random() * 1000, 10);
 
-  const handleIncrementCount2 = () => {
-    CounterService.incrementCount2();
-  };
-  const handleIncrementCount = () => {
-    CounterService.incrementCount();
-  };
-  
-  const handleDecrementCount = () => {
-    CounterService.decrementCount();
-  };
-  
-  const handleResetCount = () => {
-    CounterService.resetCount();
-  };
   
   const addMagic = () => {
     randNum = parseInt(String(Math.random() * 100), 10);
 
-    CounterService.calculateMagicNumber(randNum);
-    CounterService.castMagic();
+    counterService.calculateMagicNumber(randNum);
+    counterService.castMagic();
     console.log("magicTrigger");
   }
  
@@ -55,17 +42,74 @@ export default function Page1Presenter() {
     console.log("starting randNum");
 
     randNum = parseInt(String(Math.random() * 1000), 10);
-    CounterService.calculateMagicNumber(randNum);
+    counterService.calculateMagicNumber(randNum);
     console.log("randNum2", randNum);
 
 
   };
   const handleCast = () => {
-    CounterService.castMagic();
+    counterService.castMagic();
   }
 
   return (
-   //<Page1 data={data} handlers={this}/>
-     <Page1 data={data} handlers={{handleIncrementCount, handleIncrementCount2, handleDecrementCount, handleResetCount, addRandom, addMagic, handleCast}}/>
+     <InternalPage1  handlers={{...counterService, addRandom, addMagic, handleCast}}/>
     )
 }
+
+
+export function InternalPage1({  handlers }): JSX.Element {
+   
+  const navigation = useNavigation();
+ 
+    console.log('page1', handlers)
+    return (
+      <View style={{ width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Counter />
+      <Counter2 />
+    
+      <Button title="Increment" onPress={handlers.handleIncrementCount} />
+      <Button title="two Increment" onPress={handlers.handleIncrementCount2} />
+
+      <Button title="Decrement" onPress={handlers.handleDecrementCount} />
+      <Button title="Reset" onPress={handlers.handleResetCount} />
+      <Button title="Calculate" onPress={handlers.addRandom} />
+      <Button title="Increment Magic" onPress={handlers.addMagic} />
+      <Button title="Cast Magic" onPress={handlers.handleCast} />
+       <Link href="screens/page3" asChild>
+         <Button title="Go to page3" />
+       </Link>
+      <Button title="back" onPress={navigation.goBack} />
+
+        <MagicText3a   />
+      <MagicText1  > 
+        <MagicText3a  />
+      </MagicText1>
+ 
+    </View>
+    )
+}
+const MagicText1 = ({ children }): JSX.Element => {
+ 
+  return (
+    <>
+      <Text>MagicNums:</Text>
+      <Text >Magic: {useAppSelector(magic2Cast)}</Text>
+      {children}
+    </>
+  )
+}
+
+const MagicText3a = (): JSX.Element => {
+
+  return (
+    <>
+      <Text>MagicNums3:</Text>
+      <Text >cast: {useAppSelector(castSelect)}</Text>
+    </>
+  )
+}
+
+
+export const Counter2 = () => {
+    return <Text >Count-two: {useAppSelector(select4)}</Text>
+  }

@@ -3,7 +3,7 @@ import { View, Text, Button } from 'react-native';
 import { SelectorService } from '../../../services/SelectorService';
 import { Counter } from '../../../component/Counter';
 import { Counter2 } from '../../../component/Counter2';
-import { Page3Presenter } from './p3Biz';   
+import { Page3Presenter } from './Page3Presenter';   
 import { Link, useNavigation } from 'expo-router';
 
 

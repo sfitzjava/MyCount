@@ -2,15 +2,16 @@
 import { View, Text, Button } from 'react-native';
 import { Counter } from '../../../component/Counter';
 import { Counter2 } from '../../../component/Counter2';
-import { usePage2Presenter}  from './Page2Presenter';   
+import { Page2Presenter}  from './Page2Presenter';   
 import { Link } from 'expo-router';
 import { BasePresenter } from './BasePresenter';
 
 
 export default function Page2() {
 
-  const pageLogic: BasePresenter = usePage2Presenter({ initial: 5, final: 2 });
-
+  const pageLogic: BasePresenter = Page2Presenter({ initial: 5, final: 2 });
+  pageLogic.onLoad();
+  
   return (
     <View style={{ width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Counter />

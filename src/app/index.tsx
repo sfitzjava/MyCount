@@ -1,7 +1,7 @@
 
 import { View,  Button } from 'react-native';
 import { Link,  } from "expo-router"
-import {Page1} from './screens/views/page1'
+import {Page1} from './screens/views/page1aUI'
 // Re-export the default UI
 
 export default function mainmenu() {  

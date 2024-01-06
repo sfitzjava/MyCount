@@ -9,45 +9,48 @@ const store = createStore(reducer)
 export interface CounterService {
   getStore(): any;
   getState(): any;
-  incrementCount(): void;
-  incrementCount2(): void;
-
-  decrementCount(): void;
+  handleIncrementCount(): void;
+  handleIncrementCount2(): void;
+  handleDecrementCount(): void;
+  handleResetCount(): void;
   castMagic(): void;
-  resetCount(): void;
   calculateMagicNumber(n:number): void;
   addCountChangeListener(type: string, listener: ({ }:any) => void):EmitterSubscription;
   removeCountChangeListener(listener: EmitterSubscription):void;
 }
 
 
-export const CounterService: CounterService = {
+export const CounterService = ():CounterService  =>{
    
-
-    getStore () {
+    function getStore () {
         return store;
-       },
-   getState() {
+    }
+  
+    function getState() {
      return initialState;
-  },
+  }
 
-  incrementCount() {
+  function handleIncrementCount() {
     store.dispatch({ type: INCREMENT });
-  },
-  incrementCount2() {
-    store.dispatch({ type: INCREMENT2 });
-  },
-  decrementCount() {
-    store.dispatch({ type: DECREMENT });
-  },
-  castMagic() {
-    store.dispatch({ type: CAST });
-  },
-  resetCount() {
-    store.dispatch({ type: RESET });
-  },
+  }
 
-  calculateMagicNumber(n:number) {
+  function handleIncrementCount2() {
+    store.dispatch({ type: INCREMENT2 });
+  }
+
+  function handleDecrementCount() {
+    store.dispatch({ type: DECREMENT });
+  }
+
+  function castMagic() {
+    store.dispatch({ type: CAST });
+  }
+
+  function handleResetCount() {
+    store.dispatch({ type: RESET });
+  }
+
+  function calculateMagicNumber(n:number) {
     console.log("Costly calculation triggered.");
     let num = 1;
     for (let i = 0; i < n + 1000000; i++) {
@@ -55,16 +58,29 @@ export const CounterService: CounterService = {
     }
     const num2 = String (num - num * 0.22)
     store.dispatch({ type: MAGIC, payload: parseInt(num2, 10) });
-  },
+  }
 
-  addCountChangeListener(type: string, listener: ({}:any) => void):EmitterSubscription {
+  function addCountChangeListener(type: string, listener: ({}:any) => void):EmitterSubscription {
     return DeviceEventEmitter.addListener(type, listener);
-  },
+  }
 
 
     
-  removeCountChangeListener(listener:EmitterSubscription) {
+  function removeCountChangeListener(listener:EmitterSubscription) {
     listener?.remove();
+  }
+
+  return {
+    getStore,
+    getState,
+    handleIncrementCount,
+    handleIncrementCount2,
+    handleDecrementCount,
+    handleResetCount,
+    castMagic,
+    calculateMagicNumber,
+    addCountChangeListener,
+    removeCountChangeListener
   }
 
 }

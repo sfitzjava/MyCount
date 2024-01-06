@@ -1,6 +1,6 @@
 import { Selector, createSelector } from 'reselect';
 import {Map, fromJS } from 'immutable';
-import {RootState, useAppSelector } from './SelectorUtils';
+import {RootState, useAppSelector } from '@/selectors/SelectorUtils';
 import { CounterService } from '../../services/CounterService';
 
 
@@ -22,7 +22,7 @@ export function car_class1() {
     return val
 }
  async function castMagic() {
-  CounterService.castMagic()
+  CounterService().castMagic()
 }
 
 export interface Rental {

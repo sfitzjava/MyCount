@@ -23,7 +23,7 @@ const App = () => {
   //const CounterService1 = getCounterService();
    return (
 
-    <Provider store={CounterService.getStore()} >
+    <Provider store={CounterService().getStore()} >
       <SafeAreaProvider>
       <Stack screenOptions={{ headerShown: false }}>
            <Stack.Screen name="index" />

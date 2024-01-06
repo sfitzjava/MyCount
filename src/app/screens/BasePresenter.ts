@@ -11,4 +11,6 @@ export interface BasePresenter {
     goBack: () => void;
     onLoad: () => void;
     data: any;
+    startHooks: () => any;
+    navigation: any;
 }
